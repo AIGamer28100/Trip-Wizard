@@ -82,6 +82,62 @@ jobs:
         run: flutter config --no-analytics
       - name: Install dependencies
         run: flutter pub get
+      - name: Create firebase_options.dart for analysis
+        run: |
+          cat > lib/firebase_options.dart << 'EOF'
+          import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
+          import 'package:flutter/foundation.dart'
+              show defaultTargetPlatform, kIsWeb, TargetPlatform;
+
+          class DefaultFirebaseOptions {
+            static FirebaseOptions get currentPlatform {
+              if (kIsWeb) {
+                return web;
+              }
+              switch (defaultTargetPlatform) {
+                case TargetPlatform.android:
+                  return android;
+                case TargetPlatform.iOS:
+                  return ios;
+                case TargetPlatform.macOS:
+                  throw UnsupportedError('DefaultFirebaseOptions have not been configured for macos');
+                case TargetPlatform.windows:
+                  throw UnsupportedError('DefaultFirebaseOptions have not been configured for windows');
+                case TargetPlatform.linux:
+                  throw UnsupportedError('DefaultFirebaseOptions have not been configured for linux');
+                default:
+                  throw UnsupportedError('DefaultFirebaseOptions are not supported for this platform.');
+              }
+            }
+
+            static const FirebaseOptions android = FirebaseOptions(
+              apiKey: 'test-key',
+              appId: 'test-app',
+              messagingSenderId: 'test-sender',
+              projectId: 'test-project',
+              storageBucket: 'test-bucket',
+            );
+
+            static const FirebaseOptions ios = FirebaseOptions(
+              apiKey: 'test-key',
+              appId: 'test-app',
+              messagingSenderId: 'test-sender',
+              projectId: 'test-project',
+              storageBucket: 'test-bucket',
+              iosBundleId: 'test-bundle',
+            );
+
+            static const FirebaseOptions web = FirebaseOptions(
+              apiKey: 'test-key',
+              appId: 'test-app',
+              messagingSenderId: 'test-sender',
+              projectId: 'test-project',
+              authDomain: 'test-domain',
+              storageBucket: 'test-bucket',
+              measurementId: 'test-measurement',
+            );
+          }
+          EOF
       - name: Analyze
         run: flutter analyze
       - name: Test

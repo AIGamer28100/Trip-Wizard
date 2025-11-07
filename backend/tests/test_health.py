@@ -1,14 +1,14 @@
 """
 Tests for health check endpoint
 """
-from fastapi.testclient import TestClient
-from unittest.mock import patch, MagicMock
 import sys
 import os
 
 # Add src directory to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
 
+from fastapi.testclient import TestClient
+from unittest.mock import patch, MagicMock
 from trip_wizards.main import app
 
 client = TestClient(app)
