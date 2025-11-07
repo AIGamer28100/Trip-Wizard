@@ -141,6 +141,9 @@ firestore-debug.log
 /build/
 /coverage/
 
+# Firebase sensitive files
+lib/firebase_options.dart
+
 # Allow specific release artifacts
 !/releases/
 !/docs/
