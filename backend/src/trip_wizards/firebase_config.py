@@ -1,6 +1,5 @@
 import firebase_admin
 from firebase_admin import credentials, firestore, auth
-import os
 
 # Initialize Firebase Admin SDK
 def initialize_firebase():

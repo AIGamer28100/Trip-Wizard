@@ -3,7 +3,7 @@ Mock responses for ADK (AI Development Kit) integration.
 These fixtures simulate responses from the ADK submodule for testing purposes.
 """
 
-from typing import Dict, List, Any
+from typing import Dict, Any
 
 # Mock ADK AI suggestion responses
 ADK_SUGGESTION_RESPONSES = {

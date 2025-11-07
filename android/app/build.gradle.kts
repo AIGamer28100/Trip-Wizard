@@ -40,9 +40,9 @@ android {
         create("release") {
             // Configure release signing with your keystore
             storeFile = file("../../upload-keystore.jks")  // Path relative to android/app/
-            storePassword = System.getenv("KEYSTORE_PASSWORD") ?: "YOUR_KEYSTORE_PASSWORD"
+            storePassword = "android"
             keyAlias = "upload"
-            keyPassword = System.getenv("KEY_PASSWORD") ?: "YOUR_KEY_PASSWORD"
+            keyPassword = "android"
         }
     }
 

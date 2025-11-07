@@ -1,7 +1,7 @@
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException, Depends, Request, Header
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException, Request, Header
 from fastapi.middleware.cors import CORSMiddleware
 import json
-from typing import Dict, List, Optional
+from typing import Dict, List
 from datetime import datetime
 from pydantic import BaseModel
 import firebase_admin
@@ -171,7 +171,7 @@ async def create_payment_intent(request: CreatePaymentIntentRequest):
         return result
     except HTTPException as e:
         raise e
-    except Exception as e:
+    except Exception:
         # Fallback to mock for development
         return {
             "clientSecret": f"pi_mock_{request.userId}_{request.plan}",
@@ -224,9 +224,6 @@ async def confirm_payment(request: ConfirmPaymentRequest):
         raise e
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-    userId: str
-    plan: str
-    paymentIntentId: str
 
 class CreateOrganizationRequest(BaseModel):
     name: str
