@@ -17,21 +17,30 @@
   the iteration process.
 -->
 
-**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]  
-**Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]  
-**Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]  
-**Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]  
+**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]
+**Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]
+**Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]
+**Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]
 **Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
-**Project Type**: [single/web/mobile - determines source structure]  
-**Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]  
-**Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]  
+**Project Type**: [single/web/mobile - determines source structure]
+**Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]
+**Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]
 **Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
 
 ## Constitution Check
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- **Purpose & Values**: Feature must prioritize UX, accessibility (WCAG AA), performance, privacy-first design, and respectful community features.
+- **Architecture & Tech**: Must use Flutter for frontend with Material 3, FastAPI for backend, Firebase for DB/storage, ADK submodule for AI, Google Sign-In for auth.
+- **Security**: No secrets committed, use env vars/GitHub Secrets.
+- **Repo & Workflow**: Use specified repo, branching, conventional commits, PR reviews, CI.
+- **ADK Submodule**: ADK must be read-only submodule, not modified.
+- **Dev Environment**: Respect RAM policy, use specified optimizations.
+- **Testing**: Must include unit/widget/integration tests, aim for 80% coverage.
+- **Privacy & AI Ethics**: Obtain consent for access, redact PII, flag AI suggestions.
+- **Open Source**: Prefer free/open-source libs, track licenses.
+- **Governance**: Document decisions, require code review.
 
 ## Project Structure
 
@@ -98,7 +107,7 @@ directories captured above]
 
 > **Fill ONLY if Constitution Check has violations that must be justified**
 
-| Violation | Why Needed | Simpler Alternative Rejected Because |
-|-----------|------------|-------------------------------------|
-| [e.g., 4th project] | [current need] | [why 3 projects insufficient] |
-| [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient] |
+| Violation                  | Why Needed         | Simpler Alternative Rejected Because |
+| -------------------------- | ------------------ | ------------------------------------ |
+| [e.g., 4th project]        | [current need]     | [why 3 projects insufficient]        |
+| [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient]  |

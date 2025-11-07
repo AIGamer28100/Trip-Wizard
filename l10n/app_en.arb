@@ -1,0 +1,19 @@
+{
+    "@@locale": "en",
+    "appTitle": "Trip Wizards",
+    "settingsTitle": "Settings",
+    "settingsAccount": "Account",
+    "settingsAccountInfo": "Account Information",
+    "settingsLegal": "Legal",
+    "settingsTerms": "Terms of Service",
+    "settingsPrivacy": "Privacy Policy",
+    "settingsAppLicense": "App License",
+    "homeTrips": "My Trips",
+    "homeEmptyTitle": "No trips yet",
+    "homeEmptySubtitle": "Start planning your next adventure!",
+    "homeCreateFirstTrip": "Create Your First Trip",
+    "newTrip": "New Trip",
+    "licenseTitle": "License",
+    "creditsTitle": "AI Credits",
+    "creditsLow": "Low credits! Consider upgrading your plan."
+}

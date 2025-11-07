@@ -1,0 +1,41 @@
+{
+    "indexes": [
+        {
+            "collectionGroup": "itinerary_items",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "tripId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "day",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "time",
+                    "order": "ASCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "itinerary_items",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "tripId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "day",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "time",
+                    "order": "DESCENDING"
+                }
+            ]
+        }
+    ],
+    "fieldOverrides": []
+}

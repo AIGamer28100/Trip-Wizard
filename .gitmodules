@@ -1,0 +1,3 @@
+[submodule "backend/adk"]
+	path = backend/adk
+	url = https://github.com/karthik-r14/Travel-agent-ADK.git

@@ -1,0 +1,110 @@
+// Firestore security rules - Scoped to user and trip membership
+// These are stricter rules intended for development with proper access controls.
+// Review and adapt before deploying to production. The rules below aim to
+// ensure user-specific data (credits, badges, billing) and trip-scoped data
+// (trips, itinerary_items, bookings) are only accessible to authorized users.
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Users: only the user themselves may read or write their profile
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // Trips: only trip members may read. Creation requires the creator be the
+    // authenticated user and be included in memberIds. Only the creator may
+    // perform destructive updates (update/delete) to avoid accidental loss.
+    match /trips/{tripId} {
+      allow create: if request.auth != null
+        && request.resource.data.creatorId == request.auth.uid
+        && request.resource.data.memberIds is list
+        && request.auth.uid in request.resource.data.memberIds;
+
+      allow read: if request.auth != null
+        && resource.data.memberIds is list
+        && request.auth.uid in resource.data.memberIds;
+
+      allow update, delete: if request.auth != null
+        && resource.data.creatorId == request.auth.uid;
+    }
+
+    // Itinerary items: scoped to a trip. The authenticated user must be a
+    // member of the parent trip to read/create/update/delete items.
+    match /itinerary_items/{itemId} {
+      allow create: if request.auth != null
+        && request.resource.data.tripId is string
+        && exists(/databases/$(database)/documents/trips/$(request.resource.data.tripId))
+        && request.auth.uid in get(/databases/$(database)/documents/trips/$(request.resource.data.tripId)).data.memberIds;
+
+      allow read: if request.auth != null
+        && resource.data.tripId is string
+        && exists(/databases/$(database)/documents/trips/$(resource.data.tripId))
+        && request.auth.uid in get(/databases/$(database)/documents/trips/$(resource.data.tripId)).data.memberIds;
+
+      allow update, delete: if request.auth != null
+        && resource.data.tripId is string
+        && exists(/databases/$(database)/documents/trips/$(resource.data.tripId))
+        && request.auth.uid in get(/databases/$(database)/documents/trips/$(resource.data.tripId)).data.memberIds;
+    }
+
+    // Bookings: scoped to a trip. Only trip members may create/read/update/delete bookings.
+    match /bookings/{bookingId} {
+      allow create: if request.auth != null
+        && request.resource.data.tripId is string
+        && exists(/databases/$(database)/documents/trips/$(request.resource.data.tripId))
+        && request.auth.uid in get(/databases/$(database)/documents/trips/$(request.resource.data.tripId)).data.memberIds
+        && request.resource.data.userId == request.auth.uid;
+
+      allow read: if request.auth != null
+        && resource.data.tripId is string
+        && exists(/databases/$(database)/documents/trips/$(resource.data.tripId))
+        && request.auth.uid in get(/databases/$(database)/documents/trips/$(resource.data.tripId)).data.memberIds;
+
+      allow update, delete: if request.auth != null
+        && resource.data.tripId is string
+        && exists(/databases/$(database)/documents/trips/$(resource.data.tripId))
+        && request.auth.uid in get(/databases/$(database)/documents/trips/$(resource.data.tripId)).data.memberIds;
+    }
+
+    // User credits: only the owning user may read or modify their credits
+    match /user_credits/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // Billing records: user-scoped visibility
+    match /billing/{recordId} {
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      allow read: if request.auth != null && resource.data.userId == request.auth.uid;
+      allow update, delete: if request.auth != null && resource.data.userId == request.auth.uid;
+    }
+
+    // Badges: badges are user-specific; only the user (or server-side admin) may write/read.
+    match /badges/{badgeId} {
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      allow read: if request.auth != null && resource.data.userId == request.auth.uid;
+      allow update, delete: if request.auth != null && resource.data.userId == request.auth.uid;
+    }
+
+    // Community trips: readable by anyone authenticated or public (allow read unauthenticated if desired).
+    // Only the author may create/update their own community post. Public reading is allowed.
+    match /community_trips/{communityId} {
+      allow read: if true; // public read
+      allow create: if request.auth != null && request.resource.data.authorId == request.auth.uid;
+      allow update, delete: if request.auth != null && resource.data.authorId == request.auth.uid;
+    }
+
+    // Organizations: allow member-scoped access
+    match /organizations/{orgId} {
+      allow read: if request.auth != null && exists(/databases/$(database)/documents/organizations/$(orgId)) && request.auth.uid in resource.data.memberIds;
+      allow create: if request.auth != null; // creation controlled by client
+      allow update, delete: if request.auth != null && request.auth.uid in resource.data.admins;
+    }
+
+    // Fallback: deny everything else by default
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -1,0 +1,47 @@
+# Gitleaks configuration for Trip Wizards
+title = "Trip Wizards Secrets Scanning"
+
+[extend]
+# Extend default gitleaks config
+useDefault = true
+
+[[rules]]
+id = "firebase-credentials"
+description = "Firebase service account credentials"
+regex = '''(firebase|serviceAccount).*\.json'''
+path = '''.*'''
+
+[[rules]]
+id = "stripe-api-key"
+description = "Stripe API keys"
+regex = '''(sk|pk)_(test|live)_[0-9a-zA-Z]{24,}'''
+
+[[rules]]
+id = "adk-api-key"
+description = "ADK API keys"
+regex = '''ADK_API_KEY\s*=\s*['""]?([a-zA-Z0-9_-]{32,})['""]?'''
+
+[[rules]]
+id = "firebase-api-key"
+description = "Firebase API keys"
+regex = '''AIza[0-9A-Za-z\\-_]{35}'''
+
+[allowlist]
+description = "Global allowlist"
+paths = [
+  '''.*/test/.*''',
+  '''.*/tests/.*''',
+  '''.*/\.specify/.*''',
+  '''.*/specs/.*''',
+  '''.*/node_modules/.*''',
+  '''.*/\.git/.*''',
+  '''.*/adk/.*'''  # Exclude ADK submodule
+]
+
+regexes = [
+  '''example''',
+  '''sample''',
+  '''mock''',
+  '''test_key''',
+  '''dummy'''
+]

@@ -1,0 +1,38 @@
+[tool.poetry]
+name = "trip-wizards-backend"
+version = "0.1.0"
+description = "Backend for Trip Wizards app"
+authors = ["Trip Wizards Team <team@tripwizards.com>"]
+readme = "README.md"
+packages = [{include = "trip_wizards", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.104.1"
+uvicorn = "^0.24.0"
+pydantic = "^2.5.0"
+firebase-admin = "^6.2.0"
+httpx = "^0.25.2"
+python-multipart = "^0.0.6"
+websockets = "^12.0"
+stripe = "^7.0.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.3"
+pytest-asyncio = "^0.21.1"
+ruff = "^0.1.6"
+black = "^23.11.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry-core/mesonpy"
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"

@@ -1,0 +1,26 @@
+{
+    "firestore": {
+        "rules": "firestore.rules",
+        "indexes": "firestore.indexes.json"
+    },
+    "flutter": {
+        "platforms": {
+            "android": {
+                "default": {
+                    "projectId": "copilot-trip-wizards",
+                    "appId": "1:208763508079:android:c3c6fdb095ce4dbcadc49a",
+                    "fileOutput": "android/app/google-services.json"
+                }
+            },
+            "dart": {
+                "lib/firebase_options.dart": {
+                    "projectId": "copilot-trip-wizards",
+                    "configurations": {
+                        "android": "1:208763508079:android:c3c6fdb095ce4dbcadc49a",
+                        "web": "1:208763508079:web:3aaee8cb48d88372adc49a"
+                    }
+                }
+            }
+        }
+    }
+}

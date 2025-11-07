@@ -1,0 +1,79 @@
+name: CI
+
+on:
+  push:
+    branches: [main, 001-trip-wizards-app]
+  pull_request:
+    branches: [main, 001-trip-wizards-app]
+
+jobs:
+  secrets-scan:
+    name: Secrets Scanning
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch all history for accurate scanning
+
+      - name: Run Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }} # Optional: for Gitleaks Pro
+
+      - name: Run TruffleHog
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ${{ github.event.repository.default_branch }}
+          head: HEAD
+          extra_args: --debug --only-verified
+
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: Set up Conda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-update-conda: true
+          python-version: "3.11"
+      - name: Create environment
+        run: |
+          cd backend
+          conda env create -f environment.yml
+          conda activate trip-wizards-backend
+      - name: Install Poetry
+        run: |
+          conda activate trip-wizards-backend
+          pip install poetry
+      - name: Install dependencies
+        run: |
+          cd backend
+          conda activate trip-wizards-backend
+          poetry install
+      - name: Lint with ruff (excluding ADK)
+        run: |
+          cd backend
+          conda activate trip-wizards-backend
+          poetry run ruff check . --exclude adk/
+      - name: Test with pytest (excluding ADK)
+        run: |
+          cd backend
+          conda activate trip-wizards-backend
+          poetry run pytest --ignore=adk/
+  flutter:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.16.0"
+      - name: Install dependencies
+        run: flutter pub get
+      - name: Analyze
+        run: flutter analyze
+      - name: Test
+        run: flutter test

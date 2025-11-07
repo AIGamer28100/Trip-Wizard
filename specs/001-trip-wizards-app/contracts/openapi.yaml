@@ -1,0 +1,180 @@
+openapi: 3.0.3
+info:
+  title: Trip Wizards API
+  version: 1.0.0
+paths:
+  /api/v1/trips:
+    get:
+      summary: List user's trips
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  trips:
+                    type: array
+                    items:
+                      type: object
+    post:
+      summary: Create trip
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                destination:
+                  type: string
+                dates:
+                  type: object
+                participants:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        "201":
+          description: Created
+  /api/v1/trips/{id}:
+    put:
+      summary: Update trip
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          description: Updated
+    delete:
+      summary: Delete trip
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Deleted
+  /ws/trips/{id}/chat:
+    get:
+      summary: WebSocket for trip chat
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+  /api/v1/agent/ask:
+    post:
+      summary: Ask ADK agent
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: string
+      responses:
+        "200":
+          description: Response from ADK
+  /api/v1/agent/plan:
+    post:
+      summary: Plan with ADK
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          description: Plan response
+  /api/v1/community/publish:
+    post:
+      summary: Publish trip to community
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "201":
+          description: Published
+  /api/v1/billing/subscribe:
+    post:
+      summary: Subscribe to plan
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                plan:
+                  type: string
+      responses:
+        "200":
+          description: Subscribed
+  /api/v1/orgs/{id}/invite:
+    post:
+      summary: Invite user to org
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+      responses:
+        "200":
+          description: Invited
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

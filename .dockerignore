@@ -1,0 +1,22 @@
+# Ignore files that should not be sent to Docker build context
+node_modules
+.git
+**/build
+**/dist
+*.log
+.env
+.venv
+venv
+__pycache__
+.pytest_cache
+.idea
+.vscode
+firebase_credentials.json
+service-account.json
+backend/adk/.env*
+backend/adk/config.local.*
+backend/adk/secrets.*
+/.pub-cache
+/.dart_tool
+/.gradle
+/.DS_Store
