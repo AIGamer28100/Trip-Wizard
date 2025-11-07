@@ -35,7 +35,9 @@ paths = [
   '''.*/specs/.*''',
   '''.*/node_modules/.*''',
   '''.*/\.git/.*''',
-  '''.*/adk/.*'''  # Exclude ADK submodule
+  '''.*/adk/.*''',  # Exclude ADK submodule
+  '''.*/android/app/google-services\.json''',  # Exclude placeholder google-services.json
+  '''.*/docs/.*'''  # Exclude web build files
 ]
 
 regexes = [
@@ -43,5 +45,7 @@ regexes = [
   '''sample''',
   '''mock''',
   '''test_key''',
-  '''dummy'''
+  '''dummy''',
+  '''placeholder''',
+  '''trip-wizards-placeholder'''
 ]
