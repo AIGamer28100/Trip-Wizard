@@ -141,6 +141,10 @@ firestore-debug.log
 /build/
 /coverage/
 
+# Allow specific release artifacts
+!/releases/
+!/docs/
+
 # Symbolication related
 app.*.symbols
 
